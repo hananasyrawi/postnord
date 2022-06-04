@@ -1,0 +1,54 @@
+msgid ""
+msgstr "Project-Id-Version: tygh\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: English\n"
+"Language: en_US"
+
+msgctxt "Languages::carrier_postnord"
+msgid "carrier_postnord"
+msgstr "Postnord"
+
+msgctxt "Languages::arena_postnord.create_awb"
+msgid "arena_postnord.create_awb"
+msgstr "Create AWB"
+
+msgctxt "Languages::arena_postnord.generate_pre"
+msgid "arena_postnord.generate_pre"
+msgstr "Generate Pre"
+
+
+msgctxt "Languages::arena_postnord.company_information_text"
+msgid "arena_postnord.company_information_text"
+msgstr "Company information text"
+
+
+msgctxt "Languages::arena_postnord.phone_number"
+msgid "arena_postnord.phone_number"
+msgstr "Phone Number"
+
+msgctxt "Languages::arena_postnord.address"
+msgid "arena_postnord.address"
+msgstr "Address"
+
+
+msgctxt "Languages::arena_postnord.city"
+msgid "arena_postnord.city"
+msgstr "City"
+
+
+msgctxt "Languages::arena_postnord.state"
+msgid "arena_postnord.state"
+msgstr "State"
+
+msgctxt "Languages::arena_postnord.warehouse"
+msgid "arena_postnord.warehouse"
+msgstr "warehouse"
+
+msgctxt "Languages::arena_postnord.country"
+msgid "arena_postnord.country"
+msgstr "Country"
+
+msgctxt "Languages::arena_postnord.postal_code"
+msgid "arena_postnord.postal_code"
+msgstr "Postal Code"
+

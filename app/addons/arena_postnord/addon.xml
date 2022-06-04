@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<addon scheme='3.0'>
+    <id>arena_postnord</id>
+    <version>1.0</version>
+    <name>Areana : Postnord Shipments</name>
+    <description>Arena Shipments Integrations</description>
+    <priority>100500</priority>
+    <default_language>en</default_language>
+    <status>active</status>
+    <has_icon>Y</has_icon>
+    <supplier>ArenaSoftwares</supplier>
+    <supplier_link>https://arenasoftwares.com</supplier_link>
+    <author>
+        <name>arenasoftwares.com</name>
+        <url>http://arenasoftwares.com</url>
+        <email>support@arenasoftwares.com</email>
+    </author>
+</addon>
