@@ -16,4 +16,94 @@
         <url>http://arenasoftwares.com</url>
         <email>support@arenasoftwares.com</email>
     </author>
+    <settings>
+        <sections>
+            <section id="test_mode">
+                <name>Test Mode</name>
+                <items>
+                    <item id="test_mode">
+                        <name>TEST MODE</name>
+                        <type>checkbox</type>
+                        <default_value>Y</default_value>
+                    </item>
+                </items>
+            </section>
+            <section id="api">
+                <name>API</name>
+                <items>
+                    <item id="API_KEY">
+                        <name>API KEY</name>
+                        <type>input</type>
+                        <default_value></default_value>
+                    </item>
+
+                    <item id="postnord_URL">
+                        <name>postnord_URL</name>
+                        <type>input</type>
+                        <default_value></default_value>
+                    </item>
+                </items>
+            </section>
+
+            <section id="ship_methods">
+                <name>Shipping and Payment methods</name>
+                <items>
+                    <item id="shipping_methods">
+                        <name>Shipping methods</name>
+                        <type>multiple checkboxes</type>
+                    </item>
+                    <item id="cod_payment_methods">
+                        <name>COD payment methods</name>
+                        <type>multiple checkboxes</type>
+                    </item>
+                </items>
+            </section>
+            <section id="allow_statuses">
+                <name>Order Status</name>
+                <items>
+                    <item id="allow_status_ids">
+                        <name>Allow for order statuses</name>
+                        <type>multiple checkboxes</type>
+                    </item>
+                </items>
+            </section>
+        </sections>
+    </settings>
+    <queries>
+        <item for="install">ALTER TABLE ?:companies
+            ADD COLUMN `postnord_status` CHAR(1) DEFAULT 'N' NOT NULL,
+            ADD COLUMN `postnord_phone` VARCHAR(30) NULL,
+            ADD COLUMN `postnord_address` VARCHAR(100) NULL AFTER `postnord_phone`,
+            ADD COLUMN `postnord_address_2` VARCHAR(100) NULL AFTER `postnord_address`,
+            ADD COLUMN `postnord_city` VARCHAR(30) NULL AFTER `postnord_address_2`,
+            ADD COLUMN `postnord_state` VARCHAR(30) NULL AFTER `postnord_city`,
+            ADD COLUMN `postnord_country` VARCHAR(10) DEFAULT 'India'  NULL AFTER `postnord_state`,
+            ADD COLUMN `postnord_pincode` VARCHAR(6) NULL AFTER `postnord_country`,
+            ADD COLUMN `postnord_pickup_location` VARCHAR(36) NULL AFTER `postnord_pincode`
+        </item>
+        <item for="install">
+            CREATE TABLE ?:postnord_order_ids (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `order_id` varchar(20) DEFAULT NULL,
+            `service_order_id` varchar(20) DEFAULT NULL,
+            `order_data` text,
+            PRIMARY KEY (`id`),
+            KEY `o_s_idx` (`order_id`,`service_order_id`),
+            KEY `o_idx` (`order_id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8
+        </item>
+        <item for="install">ALTER TABLE ?:shipments ADD COLUMN postnord_order_id VARCHAR(30) NULL;</item>
+
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_status</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_phone</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_address</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_address_2</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_city</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_state</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_country</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_pincode</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_pickup_location</item>
+        <item for="uninstall">ALTER TABLE ?:shipments DROP COLUMN postnord_order_id</item>
+        <item for="uninstall">DROP TABLE IF EXISTS ?:postnord_order_ids</item>
+    </queries>
 </addon>
