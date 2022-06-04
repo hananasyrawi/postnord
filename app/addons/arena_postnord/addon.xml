@@ -74,12 +74,10 @@
             ADD COLUMN `postnord_status` CHAR(1) DEFAULT 'N' NOT NULL,
             ADD COLUMN `postnord_phone` VARCHAR(30) NULL,
             ADD COLUMN `postnord_address` VARCHAR(100) NULL AFTER `postnord_phone`,
-            ADD COLUMN `postnord_address_2` VARCHAR(100) NULL AFTER `postnord_address`,
-            ADD COLUMN `postnord_city` VARCHAR(30) NULL AFTER `postnord_address_2`,
+            ADD COLUMN `postnord_city` VARCHAR(30) NULL AFTER `postnord_address`,
             ADD COLUMN `postnord_state` VARCHAR(30) NULL AFTER `postnord_city`,
-            ADD COLUMN `postnord_country` VARCHAR(10) DEFAULT 'India'  NULL AFTER `postnord_state`,
-            ADD COLUMN `postnord_pincode` VARCHAR(6) NULL AFTER `postnord_country`,
-            ADD COLUMN `postnord_pickup_location` VARCHAR(36) NULL AFTER `postnord_pincode`
+            ADD COLUMN `postnord_country` VARCHAR(10) DEFAULT NULL  NULL AFTER `postnord_state`,
+            ADD COLUMN `postnord_postal_code` VARCHAR(6) NULL AFTER `postnord_country`
         </item>
         <item for="install">
             CREATE TABLE ?:postnord_order_ids (
@@ -97,12 +95,10 @@
         <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_status</item>
         <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_phone</item>
         <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_address</item>
-        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_address_2</item>
         <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_city</item>
         <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_state</item>
         <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_country</item>
-        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_pincode</item>
-        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_pickup_location</item>
+        <item for="uninstall">ALTER TABLE ?:companies DROP COLUMN postnord_postal_code</item>
         <item for="uninstall">ALTER TABLE ?:shipments DROP COLUMN postnord_order_id</item>
         <item for="uninstall">DROP TABLE IF EXISTS ?:postnord_order_ids</item>
     </queries>

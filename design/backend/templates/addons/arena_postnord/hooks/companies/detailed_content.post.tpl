@@ -5,7 +5,7 @@
     <div class="control-group">
         <label class="control-label" for="elm_postnord_status">{__("status")}:</label>
         <div class="controls">
-            <select id="elm_postnord_status" name="company_data[_stat drontsops]"
+            <select id="elm_postnord_status" name="company_data[postnord_status]"
                     value="{$company_data.postnord_status}" class="input-small">
                 <option value="A"
                         {if $company_data.postnord_status=='A'}selected="selected"{/if}>{__("active")}</option>
