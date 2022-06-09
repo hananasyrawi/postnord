@@ -1,6 +1,7 @@
 <?php
 
 use Arena\Aditional\BasicServiceCode;
+use Arena\Booking\BookingEdiReturn;
 use Arena\ServicePoint\ServicePoint;
 
 defined('BOOTSTRAP') or die('Access denied');
@@ -36,36 +37,69 @@ function fn_arena_postnord_basic_service_code()
 function fn_arena_postnord_booking_payload($order_id)
 {
     $order_info = fn_get_order_info($order_id);
-    $payload = generatePayload($order_info);
-    fn_print_r(@json_encode($payload));
+    $package = reset($order_info['product_groups']);
+    $packageInfo = $package['package_info']['packages'];
+
+    $payload = generatePayload($order_info, reset($packageInfo));
+    $api_key = "7cb4cd700f036ce7912b90f7fc69fc08";
+    // fn_print_die(@json_encode($payload));
+    $booking = new BookingEdiReturn($api_key);
+    $booking->setBody(@json_encode($payload));
+    $respnse = $booking->call();
+    fn_print_r($respnse->getBody());
 }
 
 
-function generatePayload($order_info)
+function generatePayload($order_info, $packageInfo)
 {
-
     $customer_info = [];
-    $customer_info['messageDate'] = Date('Y-m-d H:i:s');
+    $customer_info['messageDate'] = date('c',time());
     $customer_info['messageFunction'] = 'Instruction';
     $customer_info['updateIndicator'] = 'Original';
     $customer_info['shipment'] = [
         [
-            'shipmentIdentification' => ['shipmentId' => 1],
-            'dateAndTimes'           => ['loadingDate' => Date('Y-m-d H:i:s')],
-            'service'                => ['serviceCode' => ''],
-            "numberOfPackages"       => ['value' => 1], // TODO change into qty
-            "totalGrossWeight"       => ['unit' => 'KGM', 'value' => 1], // TODO need change into shipment information for getting weight and unit
+            'shipmentIdentification' => ['shipmentId' => "0"],
+            'dateAndTimes'           => ['loadingDate' => date('c',time())],
+            'service'                => [
+                "basicServiceCode" => "87",
+            ],
+            "numberOfPackages"       => ['value' =>  $packageInfo['amount']],
+            "totalGrossWeight"       => ['unit' => 'LBS', 'value' => $packageInfo['weight']],
             'parties'                => [
                 // Default Get information from setting addons on vendor pages
                 'consignor'          => [
-                    'issuerCode'        => 'Z10',
+                    'issuerCode'        => 'Z12',
+                    'partyIdentification' => [
+                        'partyId' => $order_info['order_id'],
+                        'partyIdType' => '160',
+                    ],
+                    'party'             => [
+                        'nameIdentification' => [
+                            'name'              => 'Consignor',                        ],
+                        'address'           => [
+                            'streets'       => [
+                                 "Terminalvägen 14",
+                            ],
+                            'postalCode'         => "17173",
+                            'city'               => "Solna", 
+                            'countryCode'        => "SE", 
+                        ],
+                        'contact'                => [
+                            'contactName'        => 'sameer', 
+                            'emailAddress'       => 'hasyrawi@gmail.com', 
+                            'smsNo'              => phone_number_clear($order_info['phone']),
+                        ],
+                    ],
+                ],
+                'consignee'          => [
+                    'issuerCode'        => 'Z12',
                     'partyIdentification' => [
                         'partyId' => '1111111111',
                         'partyIdType' => '160',
                     ],
                     'party'             => [
                         'nameIdentification' => [
-                            'name'              => $order_info['firstname'] . " " . $order_info['lastname'],
+                            'name'           => 'Consignee', 
                         ],
                         'address'           => [
                             'streets'       => [
@@ -82,31 +116,6 @@ function generatePayload($order_info)
                         ],
                     ],
                 ],
-                'consignee'          => [
-                    'issuerCode'        => 'Z10',
-                    'partyIdentification' => [
-                        'partyId' => '1111111111',
-                        'partyIdType' => '160',
-                    ],
-                    'party'             => [
-                        'nameIdentification' => [
-                            'name'              => $order_info['firstname'] . " " . $order_info['lastname'],
-                        ],
-                        'address'           => [
-                            'streets'       => [
-                                $order_info['s_address'],
-                            ],
-                            'postalCode'        => $order_info['s_zipcode'],
-                            'city'              => $order_info['s_city'],
-                            'countryCode'       => $order_info['s_country'],
-                        ],
-                        'contact'           => [
-                            'email'             => $order_info['email'],
-                            'phoneNumber'       => phone_number_clear($order_info['phone']),
-                            'contactPerson'     => $order_info['firstname'] . " " . $order_info['lastname'],
-                        ],
-                    ],
-                ],
             ],
             'goodsItem' => [
                 [
@@ -114,12 +123,12 @@ function generatePayload($order_info)
                     'items' => [
                         [
                             'itemIdentification' => [
-                                'itemId' => 1,
-                                'itemIdType' => 1,
+                                'itemId' => "0",
+                                'itemIdType' => "SSCC",
                             ],
                             'grossWeight' => [
-                                'value' => 1.2,
-                                'unit' => 'KGM',
+                                'value' => $packageInfo['amount'],
+                                'unit' => 'LBS',
                             ]
                         ]
                     ]

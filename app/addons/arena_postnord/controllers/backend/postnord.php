@@ -6,7 +6,7 @@ defined('BOOTSTRAP') or die('Access denied');
 
 
 if ($mode == 'manage') {
-    $nearestPoint = fn_arena_postnord_find_nearest_service_point();
+    $nearestPoint = fn_arena_postnord_booking_payload(112);
     fn_print_r($nearestPoint);
 }
 

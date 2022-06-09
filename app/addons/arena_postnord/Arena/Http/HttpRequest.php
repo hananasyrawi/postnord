@@ -17,7 +17,7 @@ define('API_URL', 'https://atapi2.postnord.com');
 
 trait UseHttpRequest
 {
-    public function get(string $url, $method)
+    public function get(string $url, $method = 'GET'): Response
     {
 
         $curl = curl_init();
@@ -25,6 +25,24 @@ trait UseHttpRequest
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        $res = curl_exec($curl);
+        $info = curl_getinfo($curl);
+        curl_close($curl);
+
+        $response = new Response($info, $res);
+
+        return $response;
+    }
+
+    public function post(string $url, string $body): Response
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+
         $res = curl_exec($curl);
         $info = curl_getinfo($curl);
         curl_close($curl);

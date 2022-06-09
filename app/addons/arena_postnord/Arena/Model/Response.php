@@ -11,6 +11,8 @@ class Response
 
     protected $body;
 
+    protected $info;
+
     /**
      * Construct a Billy Request with an API key and an API version.
      *
@@ -31,6 +33,11 @@ class Response
     public function getBody()
     {
         return $this->interpretResponse($this->body);
+    }
+
+    public function getInfo()
+    {
+      return $this->info;
     }
 
     /**
