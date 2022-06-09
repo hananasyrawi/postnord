@@ -53,7 +53,7 @@
         <div style="margin-top:15px;text-align: center;">
         <a class="btn cm-dialog-opener cm-ajax"
            href="{"postnord.step1?order_id=`$order_info.order_id`&mode=step1"|fn_url}"
-           data-ca-dialog-title="Postnord"
+           data-ca-dialog-title="Nearest Service Point Postnord"
         >{__("arena_postnord.generate_pre")}</a>
         </div>
     </div>

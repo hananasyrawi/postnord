@@ -40,9 +40,9 @@ msgctxt "Languages::arena_postnord.state"
 msgid "arena_postnord.state"
 msgstr "State"
 
-msgctxt "Languages::arena_postnord.warehouse"
-msgid "arena_postnord.warehouse"
-msgstr "warehouse"
+msgctxt "Languages::arena_postnord.consignee"
+msgid "arena_postnord.consignee"
+msgstr "Consignee"
 
 msgctxt "Languages::arena_postnord.country"
 msgid "arena_postnord.country"

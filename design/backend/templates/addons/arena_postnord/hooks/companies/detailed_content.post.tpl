@@ -1,5 +1,5 @@
 
-{include file="common/subheader.tpl" title=__("arena_postnord.warehouse") target="#acc_addon_postnord_warehouse"}
+{include file="common/subheader.tpl" title=__("arena_postnord.consignee") target="#acc_addon_postnord_warehouse"}
 
 <div id="acc_addon_postnord_warehouse" class="collapsed in">
     <div class="control-group">
