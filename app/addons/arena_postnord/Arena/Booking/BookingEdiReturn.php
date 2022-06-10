@@ -45,7 +45,8 @@ class BookingEdiReturn extends HttpRequest
             "?apikey={$this->apiKey}" .
             "&emailQRcode={$this->emailQRcode}" .
             "&smsQRcode={$this->smsQRcode}" .
-            "&qrCodeScale={$this->qrCodeScale}";
+            "&qrCodeScale={$this->qrCodeScale}" .
+            "&locale=en";
 
         return $this->post($url, $this->body);
     }

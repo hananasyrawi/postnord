@@ -8,11 +8,12 @@
 namespace Arena\Http;
 
 use Arena\Model\Response;
+use Tygh\Registry;
 
 defined('BOOTSTRAP') or die('Access denied');
 
 
-define('API_URL', 'https://atapi2.postnord.com');
+define('API_URL', Registry::get('addons.arena_postnord.postnord_URL'));
 
 
 trait UseHttpRequest

@@ -3,16 +3,15 @@
 use Arena\Aditional\BasicServiceCode;
 use Arena\Booking\BookingEdiReturn;
 use Arena\ServicePoint\ServicePoint;
+use Tygh\Registry;
 
 defined('BOOTSTRAP') or die('Access denied');
 
+define('API_KEY',  Registry::get('addons.arena_postnord.API_KEY'));
 
 function fn_arena_postnord_find_nearest_service_point()
 {
-    // TODO: Must Get Api Key From Addons Settings
-    $api_key = "7cb4cd700f036ce7912b90f7fc69fc08";
-
-    $servicePoint = new ServicePoint($api_key);
+    $servicePoint = new ServicePoint(API_KEY);
 
     $servicePoint
         ->setCountryCode("SE")
@@ -27,8 +26,7 @@ function fn_arena_postnord_find_nearest_service_point()
 
 function fn_arena_postnord_basic_service_code()
 {
-    $api_key = "7cb4cd700f036ce7912b90f7fc69fc08";
-    $basicService = new BasicServiceCode($api_key);
+    $basicService = new BasicServiceCode(API_KEY);
     $response =  $basicService->call();
     return $response->getBody();
 }
@@ -36,30 +34,37 @@ function fn_arena_postnord_basic_service_code()
 
 function fn_arena_postnord_booking_payload($order_id)
 {
+    // Prepare Data
     $order_info = fn_get_order_info($order_id);
     $package = reset($order_info['product_groups']);
     $packageInfo = $package['package_info']['packages'];
+    $company_id = $order_info['company_id'];
+    $companyVendorAddress = fn_arena_postnord_get_vendor_address($company_id);
+    $payload = generatePayload($order_info, reset($packageInfo), $companyVendorAddress);
 
-    $payload = generatePayload($order_info, reset($packageInfo));
-    $api_key = "7cb4cd700f036ce7912b90f7fc69fc08";
-    // fn_print_die(@json_encode($payload));
-    $booking = new BookingEdiReturn($api_key);
+    fn_print_die(@json_encode($payload));
+
+    // Call API
+    $booking = new BookingEdiReturn(API_KEY);
     $booking->setBody(@json_encode($payload));
-    $respnse = $booking->call();
-    fn_print_r($respnse->getBody());
+    $response = $booking->call();
+
+    fn_print_r($response->getBody());
+
+    return $response->getBody();
 }
 
 
-function generatePayload($order_info, $packageInfo)
+function generatePayload($order_info, $packageInfo, $vendorAddress)
 {
     $customer_info = [];
-    $customer_info['messageDate'] = date('c',time());
+    $customer_info['messageDate'] = date('c', time());
     $customer_info['messageFunction'] = 'Instruction';
     $customer_info['updateIndicator'] = 'Original';
     $customer_info['shipment'] = [
         [
             'shipmentIdentification' => ['shipmentId' => "0"],
-            'dateAndTimes'           => ['loadingDate' => date('c',time())],
+            'dateAndTimes'           => ['loadingDate' => date('c', time())],
             'service'                => [
                 "basicServiceCode" => "87",
             ],
@@ -70,36 +75,37 @@ function generatePayload($order_info, $packageInfo)
                 'consignor'          => [
                     'issuerCode'        => 'Z12',
                     'partyIdentification' => [
-                        'partyId' => $order_info['order_id'],
+                        'partyId' => $vendorAddress['company_id'], // Need changes into UUID4
                         'partyIdType' => '160',
                     ],
                     'party'             => [
                         'nameIdentification' => [
-                            'name'              => 'Consignor',                        ],
+                            'name'              => 'Consignor',
+                        ],
                         'address'           => [
                             'streets'       => [
-                                 "Terminalvägen 14",
+                                $vendorAddress['postnord_address']
                             ],
-                            'postalCode'         => "17173",
-                            'city'               => "Solna", 
-                            'countryCode'        => "SE", 
+                            'postalCode'         => $vendorAddress['postnord_postal_code'],
+                            'city'               => $vendorAddress['postnord_city'],
+                            'countryCode'        => $vendorAddress['postnord_country'],
                         ],
                         'contact'                => [
-                            'contactName'        => 'sameer', 
-                            'emailAddress'       => 'hasyrawi@gmail.com', 
-                            'smsNo'              => phone_number_clear($order_info['phone']),
+                            'contactName'        => $vendorAddress['company'],
+                            'emailAddress'       => $vendorAddress['email'],
+                            'smsNo'              => $vendorAddress['postnord_phone'],
                         ],
                     ],
                 ],
                 'consignee'          => [
                     'issuerCode'        => 'Z12',
                     'partyIdentification' => [
-                        'partyId' => '1111111111',
+                        'partyId' => "11111", 
                         'partyIdType' => '160',
                     ],
                     'party'             => [
                         'nameIdentification' => [
-                            'name'           => 'Consignee', 
+                            'name'           => 'Consignee',
                         ],
                         'address'           => [
                             'streets'       => [
@@ -146,4 +152,12 @@ function phone_number_clear($phone)
     $phone_number = explode('-', $phone);
     $after_phone_explode = implode("", $phone_number);
     return $after_phone_explode;
+}
+
+
+function fn_arena_postnord_get_vendor_address($companyId)
+{
+
+    $row = db_get_row("select * from ?:companies where company_id=?i", $companyId);
+    return $row;
 }

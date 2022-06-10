@@ -18,9 +18,6 @@
     <p>{__("arena_postnord.company_information_text")}</p>
     <div class="control-group">
         <label class="control-label cm-regexp"
-               {literal}data-ca-regexp="^[0-9]{10}$"{/literal}
-               data-ca-message="Must be 10 digits long"
-               data-ca-regexp-allow-empty="true"
                for="elm_postnord_phone"
         >{__("arena_postnord.phone_number")}:</label>
         <div class="controls">
@@ -49,7 +46,7 @@
         <label class="control-label" for="elm_postnord_city">{__("arena_postnord.city")}:</label>
         <div class="controls">
             <input type="text" id="elm_postnord_city" name="company_data[postnord_city]"
-                   value="{$company_data.city}" class="input-large"/>
+                   value="{$company_data.postnord_city}" class="input-large"/>
         </div>
     </div>
     <div class="control-group">
@@ -74,7 +71,7 @@
                for="elm_postnord_pincode">{__("arena_postnord.postal_code")}:</label>
         <div class="controls">
             <input type="text" id="elm_postnord_pincode" name="company_data[postnord_postal_code]"
-                   value="{$company_data.postnord_pincode}" class="input-large"/>
+                   value="{$company_data.postnord_postal_code}" class="input-large"/>
         </div>
     </div>
 </div>
