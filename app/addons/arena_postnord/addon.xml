@@ -18,16 +18,6 @@
     </author>
     <settings>
         <sections>
-            <section id="test_mode">
-                <name>Test Mode</name>
-                <items>
-                    <item id="test_mode">
-                        <name>TEST MODE</name>
-                        <type>checkbox</type>
-                        <default_value>Y</default_value>
-                    </item>
-                </items>
-            </section>
             <section id="api">
                 <name>API</name>
                 <items>

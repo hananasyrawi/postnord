@@ -1,5 +1,4 @@
 <?php
-
 namespace Arena\Booking;
 
 use Arena\Http\HttpRequest;

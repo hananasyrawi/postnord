@@ -7,13 +7,29 @@ use Arena\Model\Response;
 
 class BookingEdi extends HttpRequest
 {
-
+    /**
+     * @var string body 
+     */
+    protected string $body;
 
     /**
      * Call API 
      */
     public function call(): Response
     {
-        return $this->post('/booking/edi', "some");
+
+        $url = "{$this->apiUrl}/rest/shipment/v3/edi/labels/pdf?apikey={$this->apiKey}" .
+            "&paperSize=A4" .
+            "&rotate=0" .
+            "&multiPDF=false" .
+            "&labelType=standard" .
+            "&pnInfoText=false" .
+            "&labelsPerPage=100" .
+            "&page=1" .
+            "&processOffline=false" .
+            "&storeLabel=false";
+
+        // Implement Booking EDI with label PDF in here
+        return $this->post($url, $this->body);
     }
 }

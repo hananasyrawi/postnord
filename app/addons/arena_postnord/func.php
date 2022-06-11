@@ -31,8 +31,12 @@ function fn_arena_postnord_basic_service_code()
     return $response->getBody();
 }
 
-
-function fn_arena_postnord_booking_payload($order_id)
+/**
+ * @param $order_id
+ * @param $request_method
+ * @return mixed
+ */
+function fn_arena_postnord_booking_payload($order_id, $request_method)
 {
     // Prepare Data
     $order_info = fn_get_order_info($order_id);
@@ -41,15 +45,11 @@ function fn_arena_postnord_booking_payload($order_id)
     $company_id = $order_info['company_id'];
     $companyVendorAddress = fn_arena_postnord_get_vendor_address($company_id);
     $payload = generatePayload($order_info, reset($packageInfo), $companyVendorAddress);
-
-    fn_print_die(@json_encode($payload));
-
+    // TODO check request method in here
     // Call API
     $booking = new BookingEdiReturn(API_KEY);
     $booking->setBody(@json_encode($payload));
     $response = $booking->call();
-
-    fn_print_r($response->getBody());
 
     return $response->getBody();
 }
