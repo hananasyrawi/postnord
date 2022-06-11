@@ -12,6 +12,16 @@ class BookingEdi extends HttpRequest
      */
     protected string $body;
 
+
+    /**
+     * @var string body 
+     * @inheritdoc
+     */
+    public function setBody(string $body)
+    {
+        $this->body = $body;
+    }
+
     /**
      * Call API 
      */

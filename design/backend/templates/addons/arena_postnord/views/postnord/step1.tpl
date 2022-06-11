@@ -8,7 +8,7 @@
     <input type="hidden" name="skip_result_ids_check" value="true" />
      <fieldset>
         <div class="form-group">
-            <label class="control-label col-sm-2">{"Shipment Method "}: </label>
+            <label class="control-label col-sm-2">{"Booking Method : "} </label>
             <div class="col-sm-10">
                 <select name="postnord_method" class="form-control">
                     <option value="edi">Return EDI</option>

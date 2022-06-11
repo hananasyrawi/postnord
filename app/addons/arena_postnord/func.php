@@ -1,7 +1,9 @@
 <?php
 
 use Arena\Aditional\BasicServiceCode;
+use Arena\Booking\BookingEdi;
 use Arena\Booking\BookingEdiReturn;
+use Arena\Booking\PickupPostnord;
 use Arena\ServicePoint\ServicePoint;
 use Tygh\Registry;
 
@@ -45,13 +47,22 @@ function fn_arena_postnord_booking_payload($order_id, $request_method)
     $company_id = $order_info['company_id'];
     $companyVendorAddress = fn_arena_postnord_get_vendor_address($company_id);
     $payload = generatePayload($order_info, reset($packageInfo), $companyVendorAddress);
-    // TODO check request method in here
-    // Call API
-    $booking = new BookingEdiReturn(API_KEY);
-    $booking->setBody(@json_encode($payload));
-    $response = $booking->call();
 
-    return $response->getBody();
+    if ($request_method === 'edi') {
+        $booking = new BookingEdiReturn(API_KEY);
+        $booking->setBody(@json_encode($payload));
+        $response = $booking->call();
+        return $response->getBody();
+    } else if ($request_method === 'edi_with_label') {
+        $booking = new BookingEdi(API_KEY);
+        $booking->setBody(@json_encode($payload));
+        $response = $booking->call();
+        return $response->getBody();
+    } else if ($request_method === 'pickups') {
+        $booking = new PickupPostnord(API_KEY);
+        $booking->setBody(@json_encode($payload));
+        return;
+    }
 }
 
 
@@ -100,7 +111,7 @@ function generatePayload($order_info, $packageInfo, $vendorAddress)
                 'consignee'          => [
                     'issuerCode'        => 'Z12',
                     'partyIdentification' => [
-                        'partyId' => "11111", 
+                        'partyId' => "11111",
                         'partyIdType' => '160',
                     ],
                     'party'             => [
@@ -160,4 +171,15 @@ function fn_arena_postnord_get_vendor_address($companyId)
 
     $row = db_get_row("select * from ?:companies where company_id=?i", $companyId);
     return $row;
+}
+
+
+function generate_pdf_from_base64(string $pdfBase64)
+{
+    // TODO need changes 
+    $pdf = base64_decode($pdfBase64);
+    $pdf_name = uniqid() . '.pdf';
+    $pdf_path = DIR_ROOT . '/var/tmp/' . $pdf_name;
+    file_put_contents($pdf_path, $pdf);
+    return $pdf_path;
 }

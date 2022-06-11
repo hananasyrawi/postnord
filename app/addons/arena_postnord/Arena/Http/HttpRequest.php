@@ -80,4 +80,7 @@ abstract class HttpRequest
 
 
     abstract public function call(): Response;
+
+    abstract public function setBody(string $body);
+
 }
