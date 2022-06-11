@@ -7,6 +7,19 @@ use Arena\Model\Response;
 
 class BasicServiceCode extends HttpRequest
 {
+    /**
+     * @var string body 
+     */
+    protected string $body;
+  
+    /**
+     * @var string body 
+     * @inheritdoc
+     */
+    public function setBody(string $body): void
+    {
+        $this->body = $body;
+    }
 
     public function call(): Response
     {

@@ -52,7 +52,6 @@
                             <th>{"Shipment"}</th>
                             <th>{"itemId"}</th>
                             <th>{"urls"}</th>
-                            <th>{"Label"}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -63,15 +62,13 @@
                              <td>
                                <a href="{$postnord.urls->url}">Track</a>
                              </td>
-                             <td>
-                               <img src="{$postnord.labelPrintout}" /> 
-                             </td>
                           </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </fieldset>
+        <iframe width="100%" height="500"  src="data:application/pdf;base64,{$postnord.labelPrintout}"></iframe>
     {/if }
 
     <div class="buttons-container">

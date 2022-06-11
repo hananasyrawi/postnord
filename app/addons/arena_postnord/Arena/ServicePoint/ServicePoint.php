@@ -50,6 +50,22 @@ class ServicePoint extends HttpRequest
      */
     protected $postalCode = "";
 
+    /**
+     * Postal Code By Country 
+     * @var string
+     */
+    protected string $body;
+
+
+    /**
+     * @param {String} $body 
+     * @inheritdoc
+     */
+    public function setBody(string $body)
+    {
+       $this->body = $body; 
+    }
+
 
     /**
      * Country Code Available in Postnord (SE , FI , DK)
@@ -71,8 +87,7 @@ class ServicePoint extends HttpRequest
         $this->postalCode = $postalCode;
         return $this;
     }
-
-    /**
+/**
      * Set Street Name 
      * @param string
      */

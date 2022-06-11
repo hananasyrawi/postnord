@@ -11,6 +11,7 @@ if ($mode == 'manage') {
 
 if ($mode === 'generate_pdf') {
     // TODO and accpet base64 encode and dewload the content will be put the invormation from query params  
+    fn_print_die($_REQUEST);
 }
 
 // Step 1
@@ -60,6 +61,7 @@ if ($mode == "step2") {
         $shipment =  $idInformation->references->shipment[0]->referenceType . "-" . $idInformation->references->shipment[0]->referenceNo;
         $itemId = $idInformation->ids[0]->idType . "-" . $idInformation->ids[0]->value;
         $urls = $idInformation->urls[0];
+        $LabelInformation = reset($postnord->labelPrintout);
 
         $mapPostnord = [
             'bookingId' => $postnord->bookingResponse->bookingId,
@@ -67,7 +69,7 @@ if ($mode == "step2") {
             'returnId' => $returnId,
             'itemId' => $itemId,
             "urls" => $urls,
-            "labelPrintout" => "data:image/png;base64, {$LabelInformation->printout->data}"
+            "labelPrintout" => $LabelInformation->printout->data 
         ];
         $view->assign('postnord', $mapPostnord);
         $view->assign('postnord_method', $postnord_method);

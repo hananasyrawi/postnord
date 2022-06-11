@@ -15,8 +15,7 @@ function fn_arena_postnord_find_nearest_service_point()
 {
     $servicePoint = new ServicePoint(API_KEY);
 
-    $servicePoint
-        ->setCountryCode("SE")
+    $servicePoint->setCountryCode("SE")
         ->setStreetName('Holmengatan')
         ->setStreetNumber("10")
         ->setPostalCode("33234");
@@ -61,6 +60,7 @@ function fn_arena_postnord_booking_payload($order_id, $request_method)
     } else if ($request_method === 'pickups') {
         $booking = new PickupPostnord(API_KEY);
         $booking->setBody(@json_encode($payload));
+        // TODO implements pickup in diffrent payloads
         return;
     }
 }
@@ -176,10 +176,6 @@ function fn_arena_postnord_get_vendor_address($companyId)
 
 function generate_pdf_from_base64(string $pdfBase64)
 {
-    // TODO need changes 
-    $pdf = base64_decode($pdfBase64);
-    $pdf_name = uniqid() . '.pdf';
-    $pdf_path = DIR_ROOT . '/var/tmp/' . $pdf_name;
-    file_put_contents($pdf_path, $pdf);
-    return $pdf_path;
+    $bin = base64_decode($pdfBase64 , true);
+    return $bin;
 }
