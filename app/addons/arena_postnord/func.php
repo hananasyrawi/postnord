@@ -9,7 +9,7 @@ use Tygh\Registry;
 
 defined('BOOTSTRAP') or die('Access denied');
 
-define('API_KEY',  Registry::get('addons.arena_postnord.API_KEY'));
+define('API_KEY', Registry::get('addons.arena_postnord.API_KEY'));
 
 function fn_arena_postnord_find_nearest_service_point()
 {
@@ -51,16 +51,17 @@ function fn_arena_postnord_booking_payload($order_id, $request_method)
         $booking = new BookingEdiReturn(API_KEY);
         $booking->setBody(@json_encode($payload));
         $response = $booking->call();
+        handle_error_request($response->getInfo(), $response->getBody());
         return $response->getBody();
-    } else if ($request_method === 'edi_with_label') {
+    } elseif ($request_method === 'edi_with_label') {
         $booking = new BookingEdi(API_KEY);
         $booking->setBody(@json_encode($payload));
         $response = $booking->call();
+        handle_error_request($response->getInfo(), $response->getBody());
         return $response->getBody();
-    } else if ($request_method === 'pickups') {
+    } elseif ($request_method === 'pickups') {
         $booking = new PickupPostnord(API_KEY);
         $booking->setBody(@json_encode($payload));
-        // TODO implements pickup in diffrent payloads
         return;
     }
 }
@@ -168,7 +169,6 @@ function phone_number_clear($phone)
 
 function fn_arena_postnord_get_vendor_address($companyId)
 {
-
     $row = db_get_row("select * from ?:companies where company_id=?i", $companyId);
     return $row;
 }
@@ -176,6 +176,14 @@ function fn_arena_postnord_get_vendor_address($companyId)
 
 function generate_pdf_from_base64(string $pdfBase64)
 {
-    $bin = base64_decode($pdfBase64 , true);
+    $bin = base64_decode($pdfBase64, true);
     return $bin;
+}
+
+function handle_error_request($message, $data)
+{
+    if (isset($message) && $message['http_code'] === 400) {
+        fn_set_notification("E", "Error", $data->message);
+        exit;
+    }
 }

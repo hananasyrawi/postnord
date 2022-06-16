@@ -9,18 +9,10 @@
                         {$shipment.timestamp|date_format:"`$settings.Appearance.date_format`"},{$shipment.timestamp|date_format:"`$settings.Appearance.time_format`"}
                     </div>
                 </div>
-                <div class="control-group">
-                    <div class="control-label">{__("arena_shippo.service_order_id")}</div>
-                    <div id="tygh_payment_info" class="controls">{$shipment.shippo_order_id}</div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label">{__("arena_shippo.awb_no")}</div>
-                    <div id="tygh_payment_info" class="controls">{$shipment.tracking_number}</div>
-                </div>
                 {if $shipment.order_data}
                     {foreach from=$shipment.order_data item="v" key="k"}
                         <div class="control-group">
-                            <div class="control-label">{__("arena_shippo.`$k`")}</div>
+                            <div class="control-label">{__("arena_postnord.`$k`")}</div>
                             <div id="tygh_payment_info" class="controls">
                                 {if is_bool($v)}
                                     {if $v}{__("yes")}{else}{__("no")}{/if}

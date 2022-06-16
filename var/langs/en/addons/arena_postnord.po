@@ -16,11 +16,9 @@ msgctxt "Languages::arena_postnord.generate_pre"
 msgid "arena_postnord.generate_pre"
 msgstr "Generate Pre"
 
-
 msgctxt "Languages::arena_postnord.company_information_text"
 msgid "arena_postnord.company_information_text"
 msgstr "Company information text"
-
 
 msgctxt "Languages::arena_postnord.phone_number"
 msgid "arena_postnord.phone_number"
@@ -30,11 +28,9 @@ msgctxt "Languages::arena_postnord.address"
 msgid "arena_postnord.address"
 msgstr "Address"
 
-
 msgctxt "Languages::arena_postnord.city"
 msgid "arena_postnord.city"
 msgstr "City"
-
 
 msgctxt "Languages::arena_postnord.state"
 msgid "arena_postnord.state"
@@ -52,3 +48,34 @@ msgctxt "Languages::arena_postnord.postal_code"
 msgid "arena_postnord.postal_code"
 msgstr "Postal Code"
 
+msgctxt "Languages::arena_postnord.labelprintout"
+msgid "arena_postnord.labelprintout"
+msgstr "Label Printout"
+
+msgctxt "Languages::arena_postnord.tracking_number"
+msgid "arena_postnord.tracking_number"
+msgstr "Tracking Number"
+
+msgctxt "Languages::arena_postnord.itemid"
+msgid "arena_postnord.itemid"
+msgstr "Item ID"
+
+msgctxt "Languages::arena_postnord.returnid"
+msgid "arena_postnord.returnid"
+msgstr "Return ID"
+
+msgctxt "Languages::arena_postnord.returnid"
+msgid "arena_postnord.returnid"
+msgstr "Return ID"
+
+msgctxt "Languages::arena_postnord.shipment"
+msgid "arena_postnord.shipment"
+msgstr "Postnord Shipment"
+
+msgctxt "Languages::arena_postnord.bookingid"
+msgid "arena_postnord.bookingid"
+msgstr "Booking Id"
+
+msgctxt "Languages::arena_postnord.urls"
+msgid "arena_postnord.urls"
+msgstr "Postnord URLS"

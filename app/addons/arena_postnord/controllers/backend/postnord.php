@@ -1,5 +1,6 @@
 <?php
 
+use Arena\Shipment\PostnordShipment;
 use Tygh\Tygh;
 
 defined('BOOTSTRAP') or die('Access denied');
@@ -10,7 +11,7 @@ if ($mode == 'manage') {
 
 
 if ($mode === 'generate_pdf') {
-    // TODO and accpet base64 encode and dewload the content will be put the invormation from query params  
+    // TODO and accpet base64 encode and dewload the content will be put the invormation from query params
     fn_print_die($_REQUEST);
 }
 
@@ -47,9 +48,18 @@ if ($mode == "step2") {
             'shipment' => $shipment,
             'returnId' => $returnId,
             'itemId' => $itemId,
+            // Use Item Id as Tracking Number
+            'tracking_number' => explode("-", $itemId)[1],
             "urls" => $urls,
             "labelPrintout" => "data:image/png;base64, {$LabelInformation->printout->data}"
         ];
+
+        // Save Into Database if not exist will create one
+        PostnordShipment::generateOrderShipment($order_id, $mapPostnord);
+        // Update Order Data From Payload
+        PostnordShipment::updateOrderShipment($order_id, $mapPostnord);
+        // Create Shipment
+        PostnordShipment::createShipment($order_id, $mapPostnord);
 
         $view->assign('postnord', $mapPostnord);
         $view->assign('postnord_method', $postnord_method);
@@ -68,9 +78,19 @@ if ($mode == "step2") {
             'shipment' => $shipment,
             'returnId' => $returnId,
             'itemId' => $itemId,
+            // Use Item Id as Tracking Number
+            'tracking_number' => explode("-", $itemId)[1],
             "urls" => $urls,
-            "labelPrintout" => $LabelInformation->printout->data 
+            "labelPrintout" => $LabelInformation->printout->data
         ];
+
+        // Save Into Database if not exist will create one
+        PostnordShipment::generateOrderShipment($order_id, $mapPostnord);
+        // Update Order Data From Payload
+        PostnordShipment::updateOrderShipment($order_id, $mapPostnord);
+        // Create Shipment
+        PostnordShipment::createShipment($order_id, $mapPostnord);
+
         $view->assign('postnord', $mapPostnord);
         $view->assign('postnord_method', $postnord_method);
     }
