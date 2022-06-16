@@ -4,7 +4,7 @@
         {if $shipment.carrier=='postnord'}
             <div class="well orders-right-pane form-horizontal">
                 <div class="control-group">
-                    <div class="control-label">{__("arena_shippo.shipment_date")}</div>
+                    <div class="control-label">{__("arena_postnord.shipment_date")}</div>
                     <div id="tygh_payment_info" class="controls">
                         {$shipment.timestamp|date_format:"`$settings.Appearance.date_format`"},{$shipment.timestamp|date_format:"`$settings.Appearance.time_format`"}
                     </div>
@@ -24,6 +24,18 @@
 
                                 {elseif $k=='cod'}
                                     {if $v==1}{__("yes")}{/if}
+                                {elseif $k == 'labelPrintout'}
+                                   {if !fn_arena_postnord_contains_some_image($v) }
+                                      <form action="{"postnord.generate_pdf"|fn_url}"  id="generate_pdf_form" method="post"> 
+                                        <input type="hidden" name="label_base64" value="{$v}">
+                                      </form>
+                                      <input type="submit" data-ca-target-form="generate_pdf_form" class="btn btn-primary" name="dispatch[postnord.generate_pdf]" value="{__("arena_postnord.labelPrintout")}" />
+                                    {/if}
+                                   {if fn_arena_postnord_contains_some_image($v) }
+                                      <img src="{$v}" /> 
+                                   {/if}
+                                {elseif $k == 'urls'}
+                                    <a href="{$v.url}" target="_blank">Tracking Url</a>
                                 {else}
                                     {$v}
                                 {/if}
@@ -32,9 +44,6 @@
                     {/foreach}
                 {else}
                     Get It
-                {/if}
-                {if $shipment.order_data.status !== "REFUNDED"}
-                   <a href="{"shippo.refund?order_id=`$order_info.order_id`&shipment_id=`$shipment.shipment_id`"|fn_url}" class="btn cm-post">Cancel</a>
                 {/if}
             </div>
         {/if}

@@ -187,3 +187,19 @@ function handle_error_request($message, $data)
         exit;
     }
 }
+
+function fn_arena_postnord_generate_pdf_file($base64)
+{
+    $pdf_decode = base64_decode($base64);
+    return $pdf_decode;
+}
+/**
+ * Param Will Contains Base64 Encodes Will Check if data contains PNG return bool
+ * @param string $string
+ */
+function fn_arena_postnord_contains_some_image($string): bool
+{
+    $out = stripos($string, 'png');
+    return $out;
+}
+

@@ -6,14 +6,15 @@ use Tygh\Tygh;
 defined('BOOTSTRAP') or die('Access denied');
 
 
-if ($mode == 'manage') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($mode === 'generate_pdf') {
+        $base64Pdf = $_REQUEST['label_base64'];
+        $pdf = fn_arena_postnord_generate_pdf_file($base64Pdf);
+        header('Content-Type: application/pdf');
+        echo $pdf;
+    }
 }
 
-
-if ($mode === 'generate_pdf') {
-    // TODO and accpet base64 encode and dewload the content will be put the invormation from query params
-    fn_print_die($_REQUEST);
-}
 
 // Step 1
 if ($mode == "step1") {

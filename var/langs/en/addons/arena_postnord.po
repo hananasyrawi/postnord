@@ -79,3 +79,10 @@ msgstr "Booking Id"
 msgctxt "Languages::arena_postnord.urls"
 msgid "arena_postnord.urls"
 msgstr "Postnord URLS"
+
+msgctxt "Languages::arena_postnord.shipment_date"
+msgid "arena_postnord.shipment_date"
+msgstr "Shipment Date"
+
+
+
